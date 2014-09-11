@@ -1,0 +1,25 @@
+Qty. Part ID                                Description                                      Mfg. SKU              Manufacturer                Package      Value
+1    X1                                     10 Pos - Dual Row - 2.54mm Receptacle - Vertical SIP110-PPPC-D05-ST-BK Sullins Connector Solutions 534206-5     -    
+8    SW1, SW2, SW3, SW4, SW5, SW6, SW7, SW8 Tactile switch - 6x6mm - 5mm Pitch - 150g        B3F-1022              Omron Electronics           B3F-10XX     -    
+1    O1                                     Alphanumeric LCD module 20x2 - RGB Backlight     NHD-C0220BIZ          Newheaven Display           NHD-CO220BIZ -    
+2    U1, U2                                 8-bit I2C-bus LED dimmer                         PCA9530D              NXP Semiconductors          SOIC8        -    
+1    U3                                     Microcontroller 32k PROG / 1536 RAM / 256 EEPROM PIC18F2520-E/SO       -                           SOIC28       -    
+3    T1, T2, T3                             PNP Transistor                                   MMBT3906              -                           SOT23-BEC    -    
+1    U4                                     USB to serial UART interface                     FT232RL               -                           SSOP28       -    
+1    U5                                     Low-dropout (LDO) Voltage Regulator - 3.3v       MCP1700-3302E/TO      Microchip                   TO92         -    
+4    R7, R8, R9, R12                        Resistor - SMT 0603 - 0                          -                     -                           SMT 0603     0    
+3    L1, R15, R16                           Resistor - SMT 0805 - 0                          -                     -                           SMT 0805     0    
+2    C1, C2                                 Electrolytic capacitor - SMT 0805 - 1uF          -                     -                           CAP_S0805    1uF  
+2    C4, C5                                 Capacitor - SMT 0805 - 1uF                       -                     -                           SMT 0805     1uF  
+2    R1, R2                                 Resistor - SMT 1206 - 6.8                        -                     -                           SMT 1206     6.8  
+3    R10, R11, R17                          Resistor - SMT 0603 - 10k                        -                     -                           SMT 0603     10k  
+5    R4, R5, R6, R18, R19                   Resistor - SMT 0805 - 10k                        -                     -                           SMT 0805     10k  
+1    C3                                     Capacitor - SMT 0805 - 10nF                      -                     -                           SMT 0805     10nF 
+1    R3                                     Resistor - SMT 1206 - 33                         -                     -                           SMT 1206     33   
+2    C16, C17                               Capacitor - SMT 0603 - 47nF                      -                     -                           SMT 0603     47nF 
+7    C6, C8, C9, C10, C13, C14, C15         Capacitor - SMT 0603 - 100nF                     -                     -                           SMT 0603     100nF
+2    F1, F2                                 Fuse - SMT 1206 - 250mA                          -                     -                           SMD_1206     250mA
+3    R13, R14, R20                          Resistor - SMT 0805 - 680                        -                     -                           SMT 0805     680  
+2    D2, D3                                 Led 2x5mm - Green                                -                     -                           2x5mm        Green
+1    D6                                     Led Chip 0805 - Green                            -                     -                           SMT 0805     Green
+1    D1                                     Led 2x5mm - Red                                  -                     -                           2x5mm        Red  
