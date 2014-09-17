@@ -14,55 +14,55 @@
 ;#define DISABLE_I2C
 
 
-i2wr	MACRO	data
-#ifdef	DISABLE_I2C
-		nop
+i2wr    MACRO   data
+#ifdef  DISABLE_I2C
+        nop
 #else
-		movlw	data
-		call	i2c_write
+        movlw   data
+        call    i2c_write
 #endif
-		ENDM
+        ENDM
 
 
-i2rd	MACRO	reg
-#ifdef	DISABLE_I2C
-		nop
+i2rd    MACRO   reg
+#ifdef  DISABLE_I2C
+        nop
 #else
-		call	i2c_read
-		movwf	reg
+        call    i2c_read
+        movwf   reg
 #endif
-		ENDM
+        ENDM
 
 
-i2sb 	MACRO	bit
-#ifdef	DISABLE_I2C
-		nop
+i2sb    MACRO   bit
+#ifdef  DISABLE_I2C
+        nop
 #else
-		bsf		SSPCON2, bit				; Set condition
-		btfsc	SSPCON2, bit				; Wait until MSSP finish
-		goto	$-2
+        bsf     SSPCON2, bit                ; Set condition
+        btfsc   SSPCON2, bit                ; Wait until MSSP finish
+        goto    $-2
 #endif
-		ENDM
-		
-		
-i2ack	MACRO
-#ifdef	DISABLE_I2C
-		nop
+        ENDM
+        
+        
+i2ack   MACRO
+#ifdef  DISABLE_I2C
+        nop
 #else
-		bcf		SSPCON2, ACKDT				; ACK
-		bsf		SSPCON2, ACKEN				; Send ACK
-		btfsc	SSPCON2, ACKEN				; Wait until ACK has ben sent
-		goto	$-2
+        bcf     SSPCON2, ACKDT              ; ACK
+        bsf     SSPCON2, ACKEN              ; Send ACK
+        btfsc   SSPCON2, ACKEN              ; Wait until ACK has ben sent
+        goto    $-2
 #endif
-		ENDM
-		
-i2nck	MACRO
-#ifdef	DISABLE_I2C
-		nop
+        ENDM
+        
+i2nck   MACRO
+#ifdef  DISABLE_I2C
+        nop
 #else
-		bsf		SSPCON2, ACKDT				; No-ACK
-		bsf		SSPCON2, ACKEN				; Send ACK
-		btfsc	SSPCON2, ACKEN				; Wait until ACK has ben sent
-		goto	$-2		
+        bsf     SSPCON2, ACKDT              ; No-ACK
+        bsf     SSPCON2, ACKEN              ; Send ACK
+        btfsc   SSPCON2, ACKEN              ; Wait until ACK has ben sent
+        goto    $-2     
 #endif
-		ENDM
+        ENDM

@@ -11,35 +11,35 @@
 ;*                                                                            *
 ;******************************************************************************
 
-udelay	MACRO time
+udelay  MACRO time
 
 if (time <= 1275)
-		movlw	time / 5
-		call	delay10tcy
+        movlw   time / 5
+        call    delay10tcy
 endif
-		
+        
 
-		ENDM
-		
-		
-		
-		
-		
-		
-mdelay	MACRO time
+        ENDM
+        
+        
+        
+        
+        
+        
+mdelay  MACRO time
 
 if (time <= 127)
-		movlw	time * 2
-		call	delay1ktcy
+        movlw   time * 2
+        call    delay1ktcy
 endif
 
 
-		ENDM
-		
-		
-		
-		
-sdelay	MACRO time
+        ENDM
+        
+        
+        
+        
+sdelay  MACRO time
 
 
-		ENDM
+        ENDM

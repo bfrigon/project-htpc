@@ -20,10 +20,10 @@ include <p18f2520.inc>
 ;                                   Symbols 
 ;------------------------------------------------------------------------------
 ; *** Subroutines ***
-GLOBAL	delay10tcy
+GLOBAL  delay10tcy
 GLOBAL  delay100tcy
 GLOBAL  delay1ktcy
-GLOBAL	delay10ktcy
+GLOBAL  delay10ktcy
 GLOBAL  delay200ktcy
 
 
@@ -33,10 +33,10 @@ GLOBAL  delay200ktcy
 ;                                     Data   
 ;------------------------------------------------------------------------------
 ; Access bank
-.a_delay		UDATA_ACS
-d1            	RES		0x01				; Delay counters
-d2            	RES		0x01				; 
-d3            	RES		0x01				;  
+.a_delay        UDATA_ACS
+d1              RES     0x01                ; Delay counters
+d2              RES     0x01                ; 
+d3              RES     0x01                ;  
 d4              RES     0x01                ;  
 
 
@@ -44,15 +44,15 @@ d4              RES     0x01                ;
 ;==============================================================================
 ;
 ;                                Subroutines 
-;------------------------------------------------------------------------------		
-.c_delay		CODE
+;------------------------------------------------------------------------------     
+.c_delay        CODE
 
 
 ;******************************************************************************
 ; delay10tcy : delay 10 cycles (5us @ 8Mhz)
 ;
 ; Arguments : W= cycles count (W x 10 cycles)
-; Return	: None
+; Return    : None
 ;******************************************************************************
 delay10tcy:
         movwf   d1
@@ -76,7 +76,7 @@ loop_delay10tcy:
 ; delay100tcy : delay 100 cycles (50us @ 8Mhz)
 ;
 ; Arguments : W= cycles count (W x 100 cycles)
-; Return	: None
+; Return    : None
 ;******************************************************************************
 delay100tcy:
         movwf   d2
@@ -103,7 +103,7 @@ delay100tcy_done:
 ; delay1ktcy : delay 1000 cycles (0.5ms @ 8Mhz)
 ;
 ; Arguments : W= cycles count (W x 1000 cycles)
-; Return	: None
+; Return    : None
 ;******************************************************************************
 delay1ktcy:
         movwf   d2
@@ -130,7 +130,7 @@ delay1ktcy_done:
 ; delay10ktcy : delay 10000 cycles (5ms @ 8Mhz)
 ;
 ; Arguments : W= cycles count (W x 10000 cycles)
-; Return	: None
+; Return    : None
 ;******************************************************************************
 delay10ktcy:
         movwf   d3
