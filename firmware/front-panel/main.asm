@@ -220,13 +220,13 @@ main:
         movlw   D'8'                        ; Goto column 8, row 0
         call    lcd_goto
         
-        movlw   'X'                         ; Display 'XBMC'               
+        movlw   'K'                         ; Display 'KODI'               
         call    lcd_write
-        movlw   'B'
+        movlw   'O'
         call    lcd_write
-        movlw   'M'
+        movlw   'D'
         call    lcd_write
-        movlw   'C'
+        movlw   'I'
         call    lcd_write
 
         
