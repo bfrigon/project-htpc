@@ -48,7 +48,7 @@ EXTERN          i2c_write
 
 GLOBAL          colortbl
 GLOBAL          backlight_lvl               ; Current backlight color
-
+GLOBAL          prev_backlight              ; Previous backlight color
 
 
 ;==============================================================================
@@ -59,7 +59,7 @@ GLOBAL          backlight_lvl               ; Current backlight color
 ; Access bank
 .a_main         UDATA_ACS
 backlight_lvl   RES     0x03                ; Backlight levels (RGB)
-
+prev_backlight  RES     0x03                ; Previous backlight levels (RGB)
 
 .c_colortbl     CODE
 colortbl

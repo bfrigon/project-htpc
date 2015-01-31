@@ -31,7 +31,7 @@ include "i2c.inc"
 #define KEYPAD_LAT_R2       LATC, LATC2
 #define KEYPAD_PIN_C0       PORTB, RB0
 #define KEYPAD_PIN_C1       PORTB, RB1
-
+#define PIN_SLEEP           PORTB, RB2
 
 
 ;==============================================================================
@@ -75,9 +75,11 @@ EXTERN          backlight_get_clrtbl
 ; *** Variables ***
 EXTERN          lcd_trans_type              ; Transition type
 EXTERN          lcd_trans_speed             ; Transition speed
-EXTERN          cur_display
+EXTERN          cur_display                 ; Current display mode
+EXTERN          prev_display                ; Previous display mode
 EXTERN          lcd_cur_bptr
 EXTERN          backlight_lvl               ; Current backlight color
+EXTERN          prev_backlight              ; Previous backlight color
 EXTERN          colortbl
 
 
@@ -114,11 +116,11 @@ kpd_lastkey     RES     0x01
 prev_WREG       RES     0x01                ; Context backup (low priority interrupts) 
 prev_STATUS     RES     0x01
 prev_BSR        RES     0x01
-
 p_tblptrl       RES     0x01
 p_tblptrh       RES     0x01
 p_tblptru       RES     0x01
 
+prev_leds       RES     0x01                ; Previous status led state
 
 
 ;==============================================================================
@@ -181,10 +183,11 @@ main:
         movlw   b'00100000'                 ; TMR0IE=1
         movwf   INTCON
         
-        movlw   b'11110001'                 ; TMR0IP=0 (low)
+        movlw   b'11100001'                 ; TMR0IP=0 (low)
+                                            ; INTEDG2=2 (int2 hi-to-low trigger)
         movwf   INTCON2
         
-        movlw   b'00000000'
+        movlw   b'00010000'                 ; INT2IE=1 (enabled), INT2IP=0 (low)
         movwf   INTCON3
 
         
@@ -954,11 +957,6 @@ control_end:
 
 
 
-
-
-
-
-
 ;==============================================================================
 ;==============================================================================
 ;
@@ -978,6 +976,9 @@ interrupts_lo:
 
         btfsc   INTCON, TMR0IF
         goto    timer0_isr
+        
+        btfsc   INTCON3, INT2IF
+        goto    extint2_isr
 
         reset
 
@@ -1096,6 +1097,118 @@ keypad_wait_release:
         goto    interrupts_lo_exit
 
 
+        
+;------------------------------------------------------------------------------
+; External interrupt 2 ISR
+;------------------------------------------------------------------------------
+extint2_isr:
+        btfsc   PIN_SLEEP
+        bra     exit_sleep
+        
+
+enter_sleep:
+
+        ;--------------------------------
+        ; Turn off LCD
+        ;--------------------------------
+        movff   cur_display, prev_display   ; Store current display mode
+        
+        movlw   0x00
+        call    lcd_setdisplay              ; set display mode
+        
+        ;--------------------------------
+        ; Turn off backlight
+        ;--------------------------------
+        movff   backlight_lvl+0, prev_backlight+0
+        movff   backlight_lvl+1, prev_backlight+1
+        movff   backlight_lvl+2, prev_backlight+2
+        
+        movlw   0x00
+        movwf   backlight_lvl+0
+        movwf   backlight_lvl+1
+        movwf   backlight_lvl+2
+        call    backlight_set               ; Turn off backlight
+        
+        
+        ;--------------------------------
+        ; Turn off status leds
+        ;--------------------------------
+        clrf    prev_leds
+        
+        btfsc   MSG_LED_LAT_A               ; Store the state of each leds
+        bsf     prev_leds, 0
+        btfsc   MSG_LED_LAT_K
+        bsf     prev_leds, 1
+        btfsc   REC_LED_LAT_A
+        bsf     prev_leds, 2
+        btfsc   REC_LED_LAT_K
+        bsf     prev_leds, 3
+        
+        
+        bcf     MSG_LED_LAT_A               ; Turn off all leds
+        bcf     MSG_LED_LAT_K
+        bcf     REC_LED_LAT_A
+        bcf     REC_LED_LAT_K   
+        
+        
+        
+        bsf     INTCON2, INTEDG2            ; INT2 Trigger on low-to-high
+        
+        sleep                               ; Enter sleep mode
+        
+        bra     extint2_isr_done
+
+
+exit_sleep:
+        
+        ;--------------------------------
+        ; Restore LCD to previous state
+        ;--------------------------------
+        movff   prev_display, cur_display
+        movf    cur_display, W              
+        call    lcd_setdisplay              ; Restore previous display mode
+        
+        ;--------------------------------
+        ; Restore Backlight
+        ;--------------------------------
+        movff   prev_backlight+0, backlight_lvl+0
+        movff   prev_backlight+1, backlight_lvl+1
+        movff   prev_backlight+2, backlight_lvl+2
+        
+        call    backlight_set               ; Restore previous backlight levels
+        
+        ;--------------------------------
+        ; Restore status leds
+        ;--------------------------------
+        bcf     MSG_LED_LAT_A
+        bcf     MSG_LED_LAT_K
+        bcf     REC_LED_LAT_A
+        bcf     REC_LED_LAT_K  
+        
+        btfsc   prev_leds, 0
+        bsf     MSG_LED_LAT_A
+        btfsc   prev_leds, 1
+        bsf     MSG_LED_LAT_K
+        btfsc   prev_leds, 2
+        bsf     REC_LED_LAT_A
+        btfsc   prev_leds, 3
+        bsf     REC_LED_LAT_K
+        
+        
+        bcf     INTCON2, INTEDG2            ; INT2 Trigger on high-to-low
+
+extint2_isr_done:
+
+        bcf     INTCON3, INT2IF             ; Clear INT2 interrupt flag
+        bsf     INTCON3, INT2IE             ; Re-enable the interrupt
+
+        goto    interrupts_lo_exit
+
+        
+        
+        
+        
+        
 ;******************************************************************************
 ;******************************************************************************
 ;* 

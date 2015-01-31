@@ -77,6 +77,7 @@ GLOBAL          lcd_write_cgram             ; Write custom characters data
 GLOBAL          lcd_trans_type              ; Transition type
 GLOBAL          lcd_trans_speed             ; Transition speed
 GLOBAL          cur_display
+GLOBAL          prev_display
 GLOBAL          cur_contrast
 GLOBAL          lcd_cur_bptr
 
@@ -99,7 +100,8 @@ EXTERN          i2c_read
 .a_lcd          UDATA_ACS
 char            RES     0x01                ; char buffer
 cur_contrast    RES     0x01                ; Current contrast value
-cur_display     RES     0x01    
+cur_display     RES     0x01                ; Current display mode
+prev_display    RES     0x01                ; Previous display mode
 cur_function    RES     0x01
 lcd_vis_page    RES     0x01                ; Current visible page
 lcd_cur_bptr    RES     0x01                ; Current buffer ptr
@@ -136,6 +138,7 @@ lcd_init:
 
         clrf    cur_function
         clrf    cur_display
+        clrf    prev_display
         clrf    cur_contrast
         clrf    lcd_cur_bptr
         clrf    temp
